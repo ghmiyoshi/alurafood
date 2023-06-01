@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: ms-pagamentos
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:13306/alurafood-pagamento?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+    password: root
+    username: root
+  jpa:
+    show-sql: true
+
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka
+
+server:
+  port: 0
