@@ -1,6 +1,5 @@
 package br.com.alurafood.pagamentos.model;
 
-import br.com.alurafood.pagamentos.dto.PagamentoDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -69,9 +68,8 @@ public class Pagamento extends AbstractDTO {
         this.pedidoId = pedidoId;
     }
 
-    public Pagamento atualizarPagamento(PagamentoDTO pagamentoDTO) {
-        this.status = pagamentoDTO.status();
-        return this;
+    public void atualizaStatus(PagamentoStatus pagamentoStatus) {
+        this.status = pagamentoStatus;
     }
 
 }

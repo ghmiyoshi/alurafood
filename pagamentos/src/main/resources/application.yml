@@ -10,9 +10,22 @@ spring:
     show-sql: true
 
 eureka:
+  instance:
+    instance-id:
+      ${spring.application.name}:${random.int}
   client:
     service-url:
       default-zone: http://localhost:8761/eureka
 
 server:
-  port: 0
+  port: 8080
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      atualizaPedido:
+        slidingWindowSize: 3
+        minimumNumberOfCalls: 4
+        waitDurationInOpenState: 50s
+
+ms-pedidos-name: ms-pedidos

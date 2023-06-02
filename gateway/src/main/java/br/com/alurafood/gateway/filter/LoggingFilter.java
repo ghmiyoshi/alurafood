@@ -93,8 +93,7 @@ public class LoggingFilter implements GlobalFilter, Ordered {
             sb.append("""
                               Response ID: %s
                               Headers: %s
-                              Status code: %s
-                              """.formatted(id, response.getHeaders().toSingleValueMap(), response.getStatusCode()));
+                              Status code: %s""".formatted(id, response.getHeaders().toSingleValueMap(), response.getStatusCode()));
         }
 
         Logger(ServerHttpRequest request) {
@@ -103,16 +102,15 @@ public class LoggingFilter implements GlobalFilter, Ordered {
                               Headers: %s
                               Method: %s
                               Client: %s
-                              Path: %s
-                              """.formatted(request.getId(), request.getHeaders().toSingleValueMap(),
+                              Path: %s""".formatted(request.getId(), request.getHeaders().toSingleValueMap(),
                                             request.getMethod(), request.getRemoteAddress(), request.getPath()));
         }
 
 
         private void appendBody(ByteBuffer byteBuffer) {
             sb.append("""
-                              Body: %s
-                              """.formatted(StandardCharsets.UTF_8.decode(byteBuffer)));
+                              
+                              Body: %s""".formatted(StandardCharsets.UTF_8.decode(byteBuffer)));
         }
 
         private void log() {

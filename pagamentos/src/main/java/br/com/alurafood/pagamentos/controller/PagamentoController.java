@@ -45,4 +45,9 @@ public class PagamentoController {
         pagamentoService.excluirPagamento(id);
     }
 
+    @PatchMapping("/{id}/confirmar")
+    public void confirmarPagamento(@PathVariable @NotNull Long id) {
+        pagamentoService.confirmarPagamento(id);
+    }
+
 }
