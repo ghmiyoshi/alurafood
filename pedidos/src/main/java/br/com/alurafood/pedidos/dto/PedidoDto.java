@@ -18,6 +18,4 @@ public class PedidoDto {
     private Status status;
     private List<ItemDoPedidoDto> itens = new ArrayList<>();
 
-
-
 }

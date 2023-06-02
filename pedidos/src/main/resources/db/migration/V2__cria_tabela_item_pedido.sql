@@ -5,4 +5,4 @@ CREATE TABLE item_do_pedido (
   pedido_id bigint(20) NOT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (pedido_id) REFERENCES pedidos(id)
-)
+);

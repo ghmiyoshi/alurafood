@@ -7,7 +7,6 @@ import br.com.alurafood.pedidos.model.Status;
 import br.com.alurafood.pedidos.repository.PedidoRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -19,12 +18,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PedidoService {
 
-    @Autowired
-    private PedidoRepository repository;
+    private final PedidoRepository repository;
 
-    @Autowired
     private final ModelMapper modelMapper;
-
 
     public List<PedidoDto> obterTodos() {
         return repository.findAll().stream()
@@ -33,26 +29,23 @@ public class PedidoService {
     }
 
     public PedidoDto obterPorId(Long id) {
-        Pedido pedido = repository.findById(id)
+        var pedido = repository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
-
         return modelMapper.map(pedido, PedidoDto.class);
     }
 
     public PedidoDto criarPedido(PedidoDto dto) {
-        Pedido pedido = modelMapper.map(dto, Pedido.class);
-
+        var pedido = modelMapper.map(dto, Pedido.class);
         pedido.setDataHora(LocalDateTime.now());
         pedido.setStatus(Status.REALIZADO);
         pedido.getItens().forEach(item -> item.setPedido(pedido));
-        Pedido salvo = repository.save(pedido);
 
+        repository.save(pedido);
         return modelMapper.map(pedido, PedidoDto.class);
     }
 
     public PedidoDto atualizaStatus(Long id, StatusDto dto) {
-
-        Pedido pedido = repository.porIdComItens(id);
+        var pedido = repository.porIdComItens(id);
 
         if (pedido == null) {
             throw new EntityNotFoundException();
@@ -64,8 +57,7 @@ public class PedidoService {
     }
 
     public void aprovaPagamentoPedido(Long id) {
-
-        Pedido pedido = repository.porIdComItens(id);
+        var pedido = repository.porIdComItens(id);
 
         if (pedido == null) {
             throw new EntityNotFoundException();
@@ -74,4 +66,5 @@ public class PedidoService {
         pedido.setStatus(Status.PAGO);
         repository.atualizaStatus(Status.PAGO, pedido);
     }
+
 }

@@ -11,5 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StatusDto {
+
     private Status status;
+
 }

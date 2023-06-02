@@ -3,4 +3,4 @@ CREATE TABLE pedidos (
   data_hora datetime NOT NULL,
   status varchar(255) NOT NULL,
   PRIMARY KEY (id)
-)
+);
