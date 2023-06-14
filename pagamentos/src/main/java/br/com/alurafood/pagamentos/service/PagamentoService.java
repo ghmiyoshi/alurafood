@@ -65,7 +65,7 @@ public class PagamentoService {
         log.info("{}::excluirPagamento - Pagamento excluído", getClass().getSimpleName());
     }
 
-    private Pagamento buscaPagamentoAtivo(Long id) {
+    private Pagamento buscaPagamentoAtivo(final Long id) {
         var pagamento = buscarPagamento(id);
         if (!pagamento.isAtivo()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pagamento está inativo");

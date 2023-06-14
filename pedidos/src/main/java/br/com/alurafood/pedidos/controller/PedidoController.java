@@ -1,10 +1,9 @@
 package br.com.alurafood.pedidos.controller;
 
-import br.com.alurafood.pedidos.dto.PedidoDto;
-import br.com.alurafood.pedidos.dto.StatusDto;
+import br.com.alurafood.pedidos.dto.PedidoDTO;
+import br.com.alurafood.pedidos.dto.StatusDTO;
 import br.com.alurafood.pedidos.service.PedidoService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,32 +22,34 @@ public class PedidoController {
     private final PedidoService service;
 
     @GetMapping()
-    public List<PedidoDto> listarTodos() {
+    public List<PedidoDTO> listarTodos() {
         return service.obterTodos();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PedidoDto> listarPorId(@PathVariable @NotNull Long id) {
-        PedidoDto dto = service.obterPorId(id);
-        return ResponseEntity.ok(dto);
+    public ResponseEntity<PedidoDTO> listarPorId(@PathVariable @NotNull final Long id) {
+        var pedidoDto = service.obterPorId(id);
+        return ResponseEntity.ok(pedidoDto);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<PedidoDto> realizaPedido(@RequestBody @Valid PedidoDto dto, UriComponentsBuilder uriBuilder) {
-        PedidoDto pedidoRealizado = service.criarPedido(dto);
-        URI endereco = uriBuilder.path("/pedidos/{id}").buildAndExpand(pedidoRealizado.getId()).toUri();
-        return ResponseEntity.created(endereco).body(pedidoRealizado);
+    public ResponseEntity<PedidoDTO> realizaPedido(@RequestBody @Valid final PedidoDTO dto,
+                                                    final UriComponentsBuilder uriBuilder) {
+        var pedidoDto = service.criarPedido(dto);
+        URI endereco = uriBuilder.path("/pedidos/{id}").buildAndExpand(pedidoDto.id()).toUri();
+        return ResponseEntity.created(endereco).body(pedidoDto);
     }
 
     @PutMapping("/{id}/status")
-    public ResponseEntity<PedidoDto> atualizaStatus(@PathVariable Long id, @RequestBody StatusDto status) {
-        PedidoDto dto = service.atualizaStatus(id, status);
-        return ResponseEntity.ok(dto);
+    public ResponseEntity<PedidoDTO> atualizaStatus(@PathVariable final Long id,
+                                                    @RequestBody final StatusDTO status) {
+        var pedidoDto = service.atualizaStatus(id, status);
+        return ResponseEntity.ok(pedidoDto);
     }
 
     @PutMapping("/{id}/pago")
-    public ResponseEntity<Void> aprovaPagamento(@PathVariable @NotNull Long id) {
+    public ResponseEntity<Void> aprovaPagamento(@PathVariable @NotNull final Long id) {
         service.aprovaPagamentoPedido(id);
         return ResponseEntity.ok().build();
     }

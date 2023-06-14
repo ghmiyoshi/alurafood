@@ -17,6 +17,7 @@ eureka:
     service-url:
       default-zone: http://localhost:8761/eureka
 
+# 0 atribui uma porta aleatoria
 server:
   port: 0
 

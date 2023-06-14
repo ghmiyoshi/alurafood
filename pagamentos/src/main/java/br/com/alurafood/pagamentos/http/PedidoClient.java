@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 public interface PedidoClient {
 
     @PutMapping("/pedidos/{id}/pago")
-    void atualizarPedido(@PathVariable Long id);
+    void atualizarPedido(@PathVariable final Long id);
 
 }

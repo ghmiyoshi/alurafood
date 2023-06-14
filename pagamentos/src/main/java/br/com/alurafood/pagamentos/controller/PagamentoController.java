@@ -5,7 +5,6 @@ import br.com.alurafood.pagamentos.service.PagamentoService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +20,8 @@ public class PagamentoController {
     private final PagamentoService pagamentoService;
     private final RabbitTemplate rabbitTemplate;
 
+    private static final String RABBIT_EXCHANGE = "pagamentos.ex";
+
     @GetMapping
     public Page<PagamentoDTO> buscarTodos(@PageableDefault final Pageable paginacao) {
         return pagamentoService.buscarTodos(paginacao);
@@ -35,8 +36,7 @@ public class PagamentoController {
     @ResponseStatus(HttpStatus.CREATED)
     public PagamentoDTO cadastrarPagamento(@RequestBody @Valid final PagamentoDTO pagamentoDTO) {
         PagamentoDTO pagamento = pagamentoService.criarPagamento(pagamentoDTO);
-        rabbitTemplate.send("pagamento.concluido", new Message(
-                "Criei um pagamento com o id %s".formatted(pagamento.id()).getBytes()));
+        rabbitTemplate.convertAndSend(RABBIT_EXCHANGE, "", pagamento);
         return pagamento;
     }
 
