@@ -67,10 +67,9 @@ public class PagamentoService {
 
     private Pagamento buscaPagamentoAtivo(final Long id) {
         var pagamento = buscarPagamento(id);
-        if (!pagamento.isAtivo()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pagamento está inativo");
-        }
-        return pagamento;
+        if (pagamento.isAtivo())
+            return pagamento;
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pagamento está inativo");
     }
 
     @CircuitBreaker(name = "atualizaPedido", fallbackMethod = "pagamentoConfirmadoComIntegracaoPendente")
