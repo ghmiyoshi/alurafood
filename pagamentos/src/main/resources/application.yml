@@ -3,7 +3,7 @@ spring:
     name: ms-pagamentos
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:13306/alurafood-pagamento?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/alurafood-pagamento?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
     password: root
     username: root
   jpa:
@@ -34,3 +34,5 @@ ms-pedidos-name: ms-pedidos
 logging:
   level:
     br.com.alurafood.pagamentos.http.*: debug
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-}]"
