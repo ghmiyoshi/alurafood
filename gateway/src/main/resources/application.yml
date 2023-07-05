@@ -18,6 +18,6 @@ spring:
         - id: ms-pagamentos
           uri: lb://MS-PAGAMENTOS
           predicates:
-            - Path=/alurafood/pagamentos/**
+            - Path=/alurafood/**
           filters:
-            - RewritePath=/alurafood/pagamentos(?<segment>/?.*), $\{segment}
+            - RewritePath=/alurafood(?<segment>/?.*), $\{segment}
