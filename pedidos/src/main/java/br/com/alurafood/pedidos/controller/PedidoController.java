@@ -3,14 +3,14 @@ package br.com.alurafood.pedidos.controller;
 import br.com.alurafood.pedidos.dto.PedidoDTO;
 import br.com.alurafood.pedidos.dto.StatusDTO;
 import br.com.alurafood.pedidos.service.PedidoService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.util.List;
 

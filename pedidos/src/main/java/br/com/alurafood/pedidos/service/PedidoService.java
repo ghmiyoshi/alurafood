@@ -5,17 +5,18 @@ import br.com.alurafood.pedidos.dto.StatusDTO;
 import br.com.alurafood.pedidos.model.Pedido;
 import br.com.alurafood.pedidos.model.Status;
 import br.com.alurafood.pedidos.repository.PedidoRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.Objects.isNull;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PedidoService {
@@ -26,7 +27,7 @@ public class PedidoService {
     public List<PedidoDTO> obterTodos() {
         return repository.findAll().stream()
                 .map(p -> modelMapper.map(p, PedidoDTO.class))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public PedidoDTO obterPorId(final Long id) {
