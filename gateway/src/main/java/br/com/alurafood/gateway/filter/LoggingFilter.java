@@ -7,9 +7,7 @@ import org.reactivestreams.Publisher;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
-import org.springframework.core.io.buffer.DataBuffer;
-import org.springframework.core.io.buffer.DataBufferUtils;
-import org.springframework.core.io.buffer.PooledDataBuffer;
+import org.springframework.core.io.buffer.*;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpRequestDecorator;
@@ -32,11 +30,13 @@ import java.util.Set;
 @AllArgsConstructor
 public class LoggingFilter implements GlobalFilter, Ordered {
 
+    private static final String REQUEST_ID_HEADER_NAME = "request-id";
     private Tracer tracer;
 
     private static final Set<String> LOGGABLE_CONTENT_TYPES = new HashSet<>(
             Arrays.asList(MediaType.APPLICATION_JSON_VALUE.toLowerCase(),
                           MediaType.TEXT_PLAIN_VALUE,
+                          MediaType.APPLICATION_PROBLEM_JSON_VALUE,
                           MediaType.TEXT_XML_VALUE));
 
     @Override
@@ -59,7 +59,9 @@ public class LoggingFilter implements GlobalFilter, Ordered {
             }
         };
 
-        var responseMutated = new ServerHttpResponseDecorator(exchange.getResponse()) {
+        ServerHttpResponse response = exchange.getResponse();
+        response.getHeaders().add(REQUEST_ID_HEADER_NAME, traceId);
+        var responseMutated = new ServerHttpResponseDecorator(response) {
             @Override
             public Mono<Void> writeWith(Publisher<? extends DataBuffer> body) {
                 var responseLogger = new Logger(getDelegate(), traceId);
@@ -118,7 +120,9 @@ public class LoggingFilter implements GlobalFilter, Ordered {
         private void appendBody(ByteBuffer byteBuffer) {
             sb.append("""
                               
-                              Body: %s""".formatted(StandardCharsets.UTF_8.decode(byteBuffer)));
+                              Body: %s""".formatted(StandardCharsets.UTF_8.decode(byteBuffer).toString().replaceAll(
+                    "\\s+", "")));
+
         }
 
         private void log() {

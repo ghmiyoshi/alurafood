@@ -21,3 +21,9 @@ spring:
             - Path=/alurafood/**
           filters:
             - RewritePath=/alurafood(?<segment>/?.*), $\{segment}
+
+logging:
+  level:
+    br.com.alurafood.gateway.*: info
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-}]"
